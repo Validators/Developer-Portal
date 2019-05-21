@@ -1,0 +1,71 @@
+﻿@model ProjectModel
+@{
+	ViewData["Title"] = "Statistics";
+}
+@section ScriptsHeader
+	{
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+}
+
+
+
+<div class="jumbotron bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col mr-auto">
+				<h4 class="text-warning">@(ViewData["Title"]) Example <span class="lead"><a asp-action="project" asp-route-projectId="@Model.Project.Id">@Model.Project.Name</a></span></h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<hr />
+			</div>
+
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+
+						<canvas id="myChart" height="120"></canvas>
+						<script>
+							var ctx = document.getElementById('myChart').getContext('2d');
+							var myChart = new Chart(ctx, {
+								type: 'bar',
+								data: {
+									labels: ['monday', 'thuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+									datasets: [{
+										label: '# of Requests',
+										data: [12, 19, 3, 5, 2, 3],
+										backgroundColor: [
+											'rgba(54, 162, 235, 0.2)',
+											'rgba(54, 162, 235, 0.2)',
+											'rgba(54, 162, 235, 0.2)',
+											'rgba(54, 162, 235, 0.2)',
+											'rgba(54, 162, 235, 0.2)',
+											'rgba(54, 162, 235, 0.2)',
+										],
+										borderWidth: 1
+									}]
+								},
+								options: {
+									scales: {
+										yAxes: [{
+											ticks: {
+												beginAtZero: true
+											}
+										}]
+									}
+								}
+							});
+						</script>
+
+						<p class="lead mt-4">
+							This page is not connected to the cluster of nodes yet. It will be once our infrastructure are completed.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

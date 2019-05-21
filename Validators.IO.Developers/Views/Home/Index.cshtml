@@ -1,8 +1,45 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Blockchain>
+@{
+	ViewData["Title"] = "Public node access";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="">
+	<div class="container">
+		<h1 class="display-4 text-warning">Public nodes for developers</h1>
+		<p class="lead">Get started with our public nodes by registering a user.</p>
+		<hr />
+
+		<div class="row">
+			<div class="col-5">
+			<p class="lead">Currently supported blockchains:</p>
+				<ul class="list-group mb-4">
+					@foreach (var chain in Model)
+					{
+						<li class="list-group-item list-group-item-light">
+							<div class="lead">
+								<strong><i class="far fa-check-circle pr-2 text-success"></i></strong> @chain.Name <strong class="float-right">@chain.Currency</strong>
+							</div>
+						</li>
+					}
+				</ul>
+
+				<a asp-action="dashboard" class="btn btn-info btn-lg">Get started</a>
+
+			</div>
+			<div class="col-3">
+
+			</div>
+			<div class="col-4">
+				<p class="lead">
+					Documentation online at Github:
+				</p>
+				<p>
+					<a target="_blank" href="https://github.com/Validators/Polkadot-Public-Node-API-Documentation">
+						https://github.com/Validators/Polkadot-Public-Node-API-Documentation
+					</a>
+				</p>
+			</div>
+		</div>
+
+		</div>
 </div>

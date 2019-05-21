@@ -1,0 +1,40 @@
+﻿@model Validators.IO.Developers.Controllers.ProjectModel
+@{
+	ViewData["Title"] = "Delete project";
+}
+
+<div class="jumbotron bg-light">
+	<div class="container">
+		<h4 class="text-warning">@ViewData["Title"]</h4>
+		<p class="lead "></p>
+		<hr />
+
+		<form asp-action="DeleteProject">
+			<h4>Project details</h4>
+			<p>
+				Name: @Model.Project.Name
+			</p>
+			<p>
+				Blockchain: @Model.Project.Blockchain.Name
+			</p>
+			<p>
+				Created: @Model.Project.CreatedUtc
+			</p>
+			<p>
+				API-Key: @Model.Project.ApiKey
+			</p>
+
+			<div class="alert alert-danger">
+				<h4>
+					You are about to delete this project.
+				</h4>
+				The API-Key will not longer be usable!!! <br /> This cannot be undone.
+			</div>
+			<input type="hidden" class="form-control" asp-for="@Model.Project.Id">
+
+			<button type="submit" class="btn btn-danger">Delete project (@Model.Project.Name)</button>
+		</form>
+	</div>
+</div>
+
+

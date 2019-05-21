@@ -3,27 +3,144 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Validators.IO.Developers.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Validators.IO.Developers.Database;
+using Validators.IO.Developers.Database.Entities;
+using Validators.IO.Developers.Utilities;
 
 namespace Validators.IO.Developers.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		public IActionResult Index()
+		private readonly AppSettings settings;
+
+		public HomeController(AppDbContext dbContext, UserManager<User> userManager, IOptions<AppSettings> settings) : base(dbContext, userManager)
 		{
-			return View();
+			this.settings = settings.Value;
 		}
 
+		[AllowAnonymous]
+		public IActionResult Index()
+		{
+			var blockchains = dbContext.Blockchains.ToList();
+
+			return View(blockchains);
+		}
+		[AllowAnonymous]
 		public IActionResult Privacy()
 		{
 			return View();
 		}
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
+		public IActionResult Dashboard()
 		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+			var projects = dbContext.ActiveProjects.Include(p => p.Blockchain).Where(p => p.UserId == CurrentUser.Id).ToList();
+
+			return View(new DashboardModel { Projects = projects });
 		}
+
+		[Route("project/{projectId}")]
+		public IActionResult Project(int projectId)
+		{
+			var model = new ProjectModel();
+			var project = dbContext.ActiveProjects.Include(p => p.Blockchain).Where(p => p.Id == projectId && p.UserId == CurrentUser.Id).SingleOrDefault();
+
+			if (project == null)
+				return BadRequest("Project not found or access denied.");
+
+			model.Project = project;
+			model.Settings = settings;
+
+			return View(model);
+		}
+
+		[Route("project/delete/{projectId}")]
+		public IActionResult DeleteProject(int projectId)
+		{
+			var model = new ProjectModel();
+			var project = dbContext.ActiveProjects.Include(p => p.Blockchain).Where(p => p.Id == projectId && p.UserId == CurrentUser.Id).SingleOrDefault();
+
+			if (project == null)
+				return BadRequest("Project not found or access denied.");
+
+			model.Project = project;
+			model.Settings = settings;
+
+			return View(model);
+		}
+
+		[HttpPost]
+		[Route("project/delete/{projectId}")]
+		public IActionResult DeleteProject(ProjectModel model)
+		{
+			var project = dbContext.ActiveProjects.Include(p => p.Blockchain).Where(p => p.Id == model.Project.Id && p.UserId == CurrentUser.Id).SingleOrDefault();
+
+			if (project == null)
+				return BadRequest("Project not found or access denied.");
+
+			project.IsDeleted = true;
+
+			dbContext.Projects.Update(project);
+			dbContext.SaveChanges();
+
+			return RedirectToAction("dashboard");
+		}
+
+		public IActionResult AddProject()
+		{
+			var model = new AddProjectModel();
+			var blockchains = dbContext.Blockchains.ToList();
+
+			model.Blockchains = blockchains;
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public IActionResult AddProject(AddProjectModel model)
+		{
+			var blockchain = dbContext.Blockchains.Where(b => b.Id == model.SelectedBlockchainId).SingleOrDefault();
+
+			if (blockchain == null)
+				return BadRequest("Blockchain not found with id: " + model.SelectedBlockchainId  +".");
+
+			var apiKey = Guid.NewGuid();
+			var apiSecret = RandomKeyGenerator.GetUniqueKey(128);
+
+			var project = new Project
+			{
+				Name = model.Name,
+				UserId = CurrentUser.Id,
+				ApiKey = apiKey,
+				ApiSecret = apiSecret,
+				Blockchain = blockchain,
+				CreatedUtc = DateTime.UtcNow
+			};
+
+			dbContext.Projects.Add(project);
+			dbContext.SaveChanges();
+
+			return RedirectToAction("dashboard");
+		}
+
+		[Route("project/statistics/{projectId}")]
+		public IActionResult Statistics(int projectId)
+		{
+			var model = new ProjectModel();
+			var project = dbContext.ActiveProjects.Include(p => p.Blockchain).Where(p => p.Id == projectId && p.UserId == CurrentUser.Id).SingleOrDefault();
+
+			if (project == null)
+				return BadRequest("Project not found or access denied.");
+
+			model.Project = project;
+			model.Settings = settings;
+
+			return View(model);
+		}
+
 	}
 }

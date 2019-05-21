@@ -1,0 +1,29 @@
+﻿@model Validators.IO.Developers.Controllers.AddProjectModel
+@{
+	ViewData["Title"] = "Add project";
+}
+
+<div class="jumbotron bg-light">
+	<div class="container">
+		<h4 class="text-warning">Add project</h4>
+		<p class="lead "></p>
+		<hr />
+
+		<form asp-action="AddProject">
+			<div class="form-group">
+				<label for="name">Project name</label>
+				<input type="text" class="form-control" asp-for="Name" placeholder="">
+			</div>
+			<div class="form-group">
+				<label for="blockchains">Blockchain</label>
+				<select class="form-control" asp-for="SelectedBlockchainId"
+						asp-items="@(new SelectList(Model.Blockchains,"Id","Name", Model.SelectedBlockchainId))">
+					<option>Please select one</option>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</div>
+
+

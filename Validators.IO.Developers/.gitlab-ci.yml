@@ -1,0 +1,54 @@
+image: microsoft/dotnet:2.2-sdk
+variables:
+  PROJECT_NAME: 'Validators.IO.Developers'
+  WEB_FOLDER: 'C:\\Internet\\Validators.io\\Developers\\Web'
+stages:
+    - build
+    - deploy
+    - migrate
+    - cleanup
+before_script:
+
+
+build:
+    stage: build
+    script:
+        - echo %PROJECT_PATH%
+        - echo "Building the app"
+        - "dotnet build %PROJECT_NAME%.sln -c release /p:EnvironmentName=Production"
+    artifacts:
+        untracked: true
+    only:
+        - branches
+deploy:
+    stage: deploy
+    script: 
+        - powershell Move-Item -Path "%PROJECT_NAME%\\_app_offline.htm" -Destination "%WEB_FOLDER%\\app_offline.htm" -Force
+        - dotnet publish %PROJECT_NAME%\\%PROJECT_NAME%.csproj -c release -o %WEB_FOLDER% /p:EnvironmentName=Production
+    dependencies:
+        - build
+    only:
+        - branches
+
+migrate:
+    stage: migrate
+    script: 
+        - echo "Ensure that 'NT AUTHORITY\SYSTEM' has 'dbcreator' Ms Sql Server roles"
+        - set ASPNETCORE_ENVIRONMENT=Production
+        - dotnet ef database update --project %PROJECT_NAME%\\%PROJECT_NAME%.csproj --configuration Release --verbose
+    allow_failure: true
+    dependencies:
+        - deploy
+    only:
+        - branches
+
+cleanup:
+    stage: cleanup
+    script: 
+        - powershell Remove-Item -Path "%WEB_FOLDER%\\app_offline.htm" -Force 
+    dependencies:
+        - deploy
+    only:
+        - branches
+
+

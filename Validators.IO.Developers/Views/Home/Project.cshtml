@@ -1,0 +1,57 @@
+﻿@model ProjectModel
+@{
+	ViewData["Title"] = "Project";
+}
+
+
+
+
+<div class="jumbotron bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col mr-auto">
+				<h4 class="text-warning">@ViewData["Title"]</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<hr />
+			</div>
+
+			<div class="col-8">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">@Model.Project.Name</h5>
+						<h6 class="card-subtitle mb-2 text-muted">@Model.Project.Blockchain.Name</h6>
+						<h6 class="card-subtitle mb-2 text-muted">@Model.Project.CreatedUtc</h6>
+						<p class="card-text">API-Key: <span id="api-key">@Model.Project.ApiKey</span> <span data-copy-id="api-key" class="copy pointer"><i class="far fa-clipboard"></i> copy</span></p>
+						<p class="card-text">
+							API-Secret: <span id="api-secret">@Model.Project.ApiSecret</span>
+							<span data-copy-id="api-secret" class="copy pointer"><i class="far fa-clipboard"></i> copy</span>
+						</p>
+						<p class="card-text">
+							<div>
+								Mainnet: <a href="@Model.Settings.PolkadotMainnetUrl"><span id="main-url">@Model.Settings.PolkadotMainnetUrl</span></a> <span data-copy-id="main-url" class="copy pointer"><i class="far fa-clipboard"></i> copy</span>
+							</div>
+							<div>
+								Testnet: <a href="@Model.Settings.PolkadotTestnetUrl"><span id="test-url">@Model.Settings.PolkadotTestnetUrl</span></a> <span data-copy-id="test-url" class="copy pointer"><i class="far fa-clipboard"></i> copy</span>
+							</div>
+						</p>
+						<div class="row">
+							<div class="col mr-auto">
+								<a asp-action="statistics" asp-route-projectId="@Model.Project.Id" class="btn btn-outline-info"><i class="far fa-chart-bar"></i> Statistics</a>
+							</div>
+							<div class="col ml-auto">
+								<a asp-action="DeleteProject" asp-route-projectId="@Model.Project.Id" class="btn btn-outline-secondary float-right">Delete project</a>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

@@ -1,0 +1,63 @@
+﻿@model DashboardModel
+@{
+	ViewData["Title"] = "Dashboard";
+}
+
+
+
+@*Welcome message*@
+
+@if (!Model.Projects.Any())
+{
+	<div class="jumbotron bg-secondary">
+		<div class="container">
+			<h1 class="display-4 text-warning">Validators public nodes for developers</h1>
+			<p class="lead text-light">Get started with our public nodes by creating a project</p>
+			<hr />
+			<a asp-action="addproject" class="btn btn-warning btn-lg">Create project</a>
+		</div>
+	</div>
+}
+else
+{
+	<div class="jumbotron bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col mr-auto">
+					<h4 class="text-warning">Projects <span class="lead"> All blockchains</span></h4>
+				</div>
+				<div class="col ml-auto ">
+					<a asp-action="addproject" class="btn btn-warning btn-lg float-right">Create project</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<hr />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-8">
+					@foreach (var project in Model.Projects)
+					{
+						<div class="card mt-4">
+							<div class="card-body">
+								<h5 class="card-title">@project.Name</h5>
+								<h6 class="card-subtitle mb-2 text-muted">@project.Blockchain.Name</h6>
+								<p class="card-text">API-Key: @project.ApiKey</p>
+								<a asp-action="project" asp-route-projectId="@project.Id" class="btn btn-outline-info">View project</a>
+								<a asp-action="statistics" asp-route-projectId="@project.Id" class="btn btn-outline-info"><i class="far fa-chart-bar"></i> Statistics</a>
+
+							</div>
+						</div>
+
+					}
+				</div>
+				<div class="col-4">
+
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
