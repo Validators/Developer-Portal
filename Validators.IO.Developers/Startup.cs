@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Validators.IO.Developers.Database;
@@ -39,6 +40,11 @@ namespace Validators.IO.Developers
 			// AppSettings.json
 			//
 			services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+			// Database
+			//
+			services.AddDbContext<AppDbContext>(options =>
+				options.UseSqlite(Configuration.GetConnectionString("AppDbContextConnection")));
 
 
 			// IdentityUser settings

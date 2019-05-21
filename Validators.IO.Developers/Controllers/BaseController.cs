@@ -30,6 +30,7 @@ namespace Validators.IO.Developers.Controllers
 			get
 			{
 				var user = userManager.GetUserAsync(HttpContext.User).Result;
+
 				return user;
 			}
 		}

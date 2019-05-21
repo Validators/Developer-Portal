@@ -22,13 +22,15 @@ namespace Validators.IO.Developers.Database
 
 		public DbSet<Blockchain> Blockchains { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlite("Data Source=database.db");
-		}
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	optionsBuilder.UseSqlite("Data Source=database.db");
+		//}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			// Admin role
+			//
 			modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Admin", NormalizedName = "Admin".ToUpper() });
 
 
