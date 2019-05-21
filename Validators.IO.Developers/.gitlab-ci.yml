@@ -9,7 +9,6 @@ stages:
     - cleanup
 before_script:
 
-
 build:
     stage: build
     script:
