@@ -110,6 +110,15 @@ namespace Validators.IO.Developers
 				app.UseHsts();
 			}
 
+			// Update Database
+			//
+			using (var serviceScope = app.ApplicationServices.CreateScope())
+			{
+				var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+				context.Database.Migrate();
+			}
+
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();

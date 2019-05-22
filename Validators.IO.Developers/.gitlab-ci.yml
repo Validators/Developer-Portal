@@ -29,19 +29,6 @@ deploy:
     only:
         - branches
 
-migrate:
-    stage: migrate
-    script: 
-        - echo "Ensure that 'NT AUTHORITY\SYSTEM' has 'dbcreator' Ms Sql Server roles"
-        - set ASPNETCORE_ENVIRONMENT=Production
-        - dotnet ef database update --project %PROJECT_NAME%\\%PROJECT_NAME%.csproj --configuration Release --verbose
-    allow_failure: true
-    dependencies:
-        - deploy
-    only:
-        - branches
-
-
 cleanup:
     stage: cleanup
     script: 
