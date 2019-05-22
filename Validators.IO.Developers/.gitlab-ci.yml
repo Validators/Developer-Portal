@@ -29,6 +29,16 @@ deploy:
     only:
         - branches
 
+migrate:
+    stage: migrate
+    script: 
+        - echo "Database migration done in code - startup class in order to get correct write permission and path of sqlite database file."
+    dependencies:
+        - deploy
+    only:
+        - branches
+
+
 cleanup:
     stage: cleanup
     script: 
