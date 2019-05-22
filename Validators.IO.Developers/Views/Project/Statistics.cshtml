@@ -13,7 +13,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col mr-auto">
-				<h4 class="text-warning">@(ViewData["Title"]) Example <span class="lead"><a asp-action="project" asp-route-projectId="@Model.Project.Id">@Model.Project.Name</a></span></h4>
+				<h4 class="text-warning"><a asp-action="dashboard" class="text-warning">Projects</a> / <a asp-action="project" asp-route-projectId="@Model.Project.Id" class="text-warning">@Model.Project.Name </a><span class="lead"> / @(ViewData["Title"]) Example</span></h4>
 			</div>
 		</div>
 		<div class="row">
@@ -24,7 +24,7 @@
 			<div class="col-12">
 				<div class="card">
 					<div class="card-body">
-
+						<h4>Statistics example</h4>
 						<canvas id="myChart" height="120"></canvas>
 						<script>
 							var ctx = document.getElementById('myChart').getContext('2d');

@@ -11,7 +11,7 @@
 
 		<div class="row">
 			<div class="col-5">
-			<p class="lead">Currently supported blockchains:</p>
+				<p class="lead">Currently supported blockchains:</p>
 				<ul class="list-group mb-4">
 					@foreach (var chain in Model)
 					{
@@ -23,7 +23,7 @@
 					}
 				</ul>
 
-				<a asp-action="dashboard" class="btn btn-info btn-lg">Get started</a>
+				<a asp-controller="project" asp-action="addproject" class="btn btn-info btn-lg">Get started</a>
 
 			</div>
 			<div class="col-3">
