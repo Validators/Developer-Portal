@@ -81,6 +81,12 @@ namespace Validators.IO.Developers
 			//
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
+			services.AddHttpsRedirection(options =>
+			{
+				options.HttpsPort = 443;
+			});
+
 			// Website
 			//
 			services.AddMvc(config =>
