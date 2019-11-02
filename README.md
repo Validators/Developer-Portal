@@ -30,4 +30,7 @@ You only need to change the PolkadotMainnetUrl and PolkadotTestnetUrl setting to
 
 ##
 
+Please notice that this solution does not contain any API endpoints to log requests for analytics purposes. This can be setup in different ways and therefor left as an exercise for the developer.
+##
+
 *This software is release as open source under the Apache license version 2.0. Use at own risk.*
