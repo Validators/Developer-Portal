@@ -6,6 +6,10 @@ Open the project in Visual Studio 2017 or later to compile the project. Or use t
 `dotnet publish Validators.IO.Developers\\Validators.IO.Developers.csproj -c release -o c:\\YourFolder /p:EnvironmentName=Production`
 
 
+## User registration
+
+The project uses the standard .net MVC IdentityUser as its basis for user management and registration. The basic functionality is scaffolded in the **Areas** folder.
+
 ## Configuration
 There are one configuration file called appsettings.Production.json that contain the following:
 
@@ -20,8 +24,8 @@ There are one configuration file called appsettings.Production.json that contain
 		"AppDbContextConnection": "DataSource=database.db" 
 	},
 	"AppSettings": {
-		"PolkadotMainnetUrl": "http://polkadot.mainnet.validators.io:9933",
-		"PolkadotTestnetUrl": "http://polkadot.testnet.validators.io:9933"
+		"PolkadotMainnetUrl": "https://polkadot.nnode.io",
+		"PolkadotTestnetUrl": "https://polkadot.testnet.nnode.io"
 	}
 
 }
